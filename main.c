@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/21 13:36:53 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/21 19:12:43 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int		main()
 {
-	int* test = malloc(10);
+	int* test = ft_malloc(1);
+	printf("test: %p\n", test);
+	test = ft_malloc(1);
+	printf("test: %p\n", test);
 	return (0);
 }
