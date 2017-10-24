@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/21 19:12:41 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/22 20:01:43 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*ft_malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 
-int		init_zones(t_env *env);
+int		init_zones(t_env *e);
+int		create_zone(t_block **block, size_t size);
 
 #endif

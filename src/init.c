@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/21 13:53:36 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/21 17:53:18 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/24 11:04:55 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ void	init_block(t_block *block, int size, t_block *next, int free)
 	block->free = free;
 }
 
-int		create_zone(t_env *env, int type)
+int		create_zone(t_block **block, size_t size)
 {
-	const int	size = (type == TYPE_TINY ? env->tiny_size : env->small_size);
-	t_block		**block;
 	t_block		*tmp;
 
-	block = (type == TYPE_TINY ? &env->tiny : &env->small);
 	if (*block == NULL)
 	{
 		if ((*block = (void*)mmap(NULL, size, PROT_READ | PROT_WRITE,\
@@ -46,13 +43,14 @@ int		create_zone(t_env *env, int type)
 	return (1);
 }
 
-int		init_zones(t_env *env)
+int		init_zones(t_env *e)
 {
-	const int	page_size = getpagesize();
+	const int	page = getpagesize();
 
-	env->tiny_size = (TINY * 100 - 1) / page_size * page_size + page_size;
-	env->small_size = (SMALL * 100 - 1) / page_size * page_size + page_size;
-	if (!create_zone(env, TYPE_TINY) || !create_zone(env, TYPE_SMALL))
+	e->tiny_size = ((TINY + sizeof(t_block)) * 100 - 1) / page * page + page;
+	e->small_size = ((SMALL + sizeof(t_block)) * 100 - 1) / page * page + page;
+	if (!create_zone(&e->tiny, e->tiny_size)
+	|| !create_zone(&e->small, e->small_size))
 		return (0);
 	return (1);
 }
