@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/24 10:47:56 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/24 17:38:05 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	create_block(t_block *block, size_t size)
 	t_block		*tmp;
 
 	block->free = 0;
-	if (block->size != size)
+	if (block->size != size && block->size - size > sizeof(t_block))
 	{
 		tmp = block->next;
 		block->next = (t_block*)((void*)block + sizeof(t_block) + size);
@@ -49,16 +49,37 @@ void	*tiny_small_alloc(t_env *e, size_t size, int type)
 		return (tiny_small_alloc(e, size, type));
 }
 
+void	*large_alloc(t_env *e, size_t size)
+{
+	t_block		*block;
+
+	block = e->large;
+	while (block)
+	{
+		if (block->free && block->size >= size)
+		{
+			create_block(block, size);
+			return ((void*)block + sizeof(t_block));
+		}
+		block = block->next;
+	}
+	if (!create_zone(&e->large, ALIGN_PAGE(size + sizeof(t_block))))
+		return (NULL);
+	else
+		return (large_alloc(e, size));
+}
+
 void	*ft_malloc(size_t size)
 {
-	static t_env	e = {NULL, 0, NULL, 0, NULL};
+	t_env	*e;
 
-	if (e.tiny == NULL && !init_zones(&e))
+	e = get_env();
+	if (e->tiny == NULL && !init_zones(e))
 		return (NULL);
 	if (size > SMALL)
-		return (NULL);//LARGE
+		return (large_alloc(e, size));
 	else if (size > TINY)
-		return (tiny_small_alloc(&e, size, TYPE_SMALL));
+		return (tiny_small_alloc(e, size, TYPE_SMALL));
 	else
-		return (tiny_small_alloc(&e, size, TYPE_TINY));
+		return (tiny_small_alloc(e, size, TYPE_TINY));
 }

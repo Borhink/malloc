@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/22 20:01:43 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/24 15:06:01 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 # define TINY 256
 # define SMALL 1024
 
-# define ALIGN_4(x) (((((x) - 1 ) >> 2) << 2) + 4)
+# define ALIGN_24(x) ((x - 1) / 24 * 24 + 24)
+# define ALIGN_PAGE(x) ((x - 1) / getpagesize() * getpagesize() + getpagesize())
 
 typedef struct s_block	t_block;
 typedef struct s_env	t_env;
@@ -51,6 +52,7 @@ void	*ft_malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 
+t_env	*get_env(void);
 int		init_zones(t_env *e);
 int		create_zone(t_block **block, size_t size);
 

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/21 13:53:36 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/24 11:04:55 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/24 13:12:03 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,8 @@ int		create_zone(t_block **block, size_t size)
 
 int		init_zones(t_env *e)
 {
-	const int	page = getpagesize();
-
-	e->tiny_size = ((TINY + sizeof(t_block)) * 100 - 1) / page * page + page;
-	e->small_size = ((SMALL + sizeof(t_block)) * 100 - 1) / page * page + page;
+	e->tiny_size = ALIGN_PAGE((TINY + sizeof(t_block)) * 100);
+	e->small_size = ALIGN_PAGE((SMALL + sizeof(t_block)) * 100);
 	if (!create_zone(&e->tiny, e->tiny_size)
 	|| !create_zone(&e->small, e->small_size))
 		return (0);
