@@ -6,27 +6,11 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/24 17:38:05 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/25 14:05:41 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-void	create_block(t_block *block, size_t size)
-{
-	t_block		*tmp;
-
-	block->free = 0;
-	if (block->size != size && block->size - size > sizeof(t_block))
-	{
-		tmp = block->next;
-		block->next = (t_block*)((void*)block + sizeof(t_block) + size);
-		block->next->free = 1;
-		block->next->size = block->size - size - sizeof(t_block);
-		block->next->next = tmp;
-		block->size = size;
-	}
-}
 
 void	*tiny_small_alloc(t_env *e, size_t size, int type)
 {

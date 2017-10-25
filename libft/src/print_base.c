@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/23 03:25:32 by qhonore           #+#    #+#             */
-/*   Updated: 2016/09/27 12:12:09 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/25 15:53:21 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			print_ptr(va_list *args, t_param *p)
 	int		ret;
 
 	get_wild_arg(args, p);
-	str = ft_ltoa_base(va_arg(*args, long), 16, 0);
+	str = ft_ltoa_base(va_arg(*args, long), 16, 1);
 	str = adjust_prec(str, p);
 	str = strjoin_n_free("0x", str);
 	if (!p->flag[MIN] && !p->flag[ZERO])

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/24 15:06:01 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/25 14:11:13 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void	show_alloc_mem(void);
 t_env	*get_env(void);
 int		init_zones(t_env *e);
 int		create_zone(t_block **block, size_t size);
+void	create_block(t_block *block, size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/24 17:39:20 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/25 16:13:38 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	test_large_malloc()
 
 	ptr = ft_malloc(30000);
 	block = (t_block*)(ptr - (sizeof(t_block)));
-	ptr = ft_malloc(2696);
+	ptr = ft_malloc(2695);
 
 	i = 0;
 	while (block)
@@ -69,10 +69,26 @@ void	test_large_malloc()
 	}
 }
 
+void	test_show_alloc_mem()
+{
+	void	*ptr;
+
+	ptr = ft_malloc(19);
+	ptr = ft_malloc(568);
+	ptr = ft_malloc(200);
+	ptr = ft_malloc(803);
+	ptr = ft_malloc(1925);
+	ptr = ft_malloc(3054);
+	ptr = ft_malloc(765);
+	ptr = ft_malloc(956324);
+	show_alloc_mem();
+}
+
 int		main()
 {
 	// test_tiny_size_limits();
 	// test_tiny_create_extra_zone();
-	test_large_malloc();
+	// test_large_malloc();
+	test_show_alloc_mem();
 	return (0);
 }
