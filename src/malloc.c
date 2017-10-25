@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 14:05:41 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/25 18:00:32 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ void	*ft_malloc(size_t size)
 	t_env	*e;
 
 	e = get_env();
-	if (e->tiny == NULL && !init_zones(e))
-		return (NULL);
 	if (size > SMALL)
 		return (large_alloc(e, size));
 	else if (size > TINY)
+	{
+		if (e->small == NULL && !init_zone(e, TYPE_SMALL))
+			return (NULL);
 		return (tiny_small_alloc(e, size, TYPE_SMALL));
+	}
 	else
+	{
+		if (e->tiny == NULL && !init_zone(e, TYPE_TINY))
+			return (NULL);
 		return (tiny_small_alloc(e, size, TYPE_TINY));
+	}
 }
