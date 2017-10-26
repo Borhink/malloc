@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 18:01:47 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/26 16:43:19 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ struct	s_env
 	t_block	*large;
 };
 
-void	my_free(void *ptr);
-void	*ft_malloc(size_t size);
+void	free(void *ptr);
+void	*malloc(size_t size);
+void	*calloc(size_t nitems, size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 
@@ -56,5 +57,9 @@ t_env	*get_env(void);
 int		init_zone(t_env *e, int type);
 int		create_zone(t_block **block, size_t size);
 void	create_block(t_block *block, size_t size);
+
+size_t	ft_strlen(const char *s);
+int		ft_putstr(char const *s);
+void	ft_bzero(void *s, size_t n);
 
 #endif

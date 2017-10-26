@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 18:06:06 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/26 15:21:14 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	test_tiny_size_limits()
 {
-	char* ptr = ft_malloc(256);
+	char* ptr = malloc(256);
 
 	printf("ptr: %p\n", ptr);
 	ptr[0] = 1;
@@ -35,12 +35,12 @@ void	test_tiny_create_extra_zone()
 
 	while (i < 102)
 	{
-		ptr = ft_malloc(256);
+		ptr = malloc(256);
 		if (i == 0)
 			block = (t_block*)(ptr - (sizeof(t_block)));
 		i++;
 	}
-	ptr = ft_malloc(89);
+	ptr = malloc(89);
 	i = 0;
 	while (block)
 	{
@@ -56,9 +56,9 @@ void	test_large_malloc()
 	char	*ptr;
 	t_block	*block;
 
-	ptr = ft_malloc(30000);
+	ptr = malloc(30000);
 	block = (t_block*)(ptr - (sizeof(t_block)));
-	ptr = ft_malloc(2695);
+	ptr = malloc(2695);
 
 	i = 0;
 	while (block)
@@ -73,14 +73,14 @@ void	test_show_alloc_mem()
 {
 	void	*ptr;
 
-	ptr = ft_malloc(19);
-	ptr = ft_malloc(568);
-	ptr = ft_malloc(200);
-	ptr = ft_malloc(803);
-	ptr = ft_malloc(1925);
-	ptr = ft_malloc(3054);
-	ptr = ft_malloc(765);
-	ptr = ft_malloc(956324);
+	ptr = malloc(19);
+	ptr = malloc(568);
+	ptr = malloc(200);
+	ptr = malloc(803);
+	ptr = malloc(1925);
+	ptr = malloc(3054);
+	ptr = malloc(765);
+	ptr = malloc(956324);
 	show_alloc_mem();
 }
 
@@ -88,21 +88,38 @@ void	test_free()
 {
 	void	*ptr[8];
 
-	ptr[0] = ft_malloc(59);
-	ptr[1] = ft_malloc(568);
-	ptr[2] = ft_malloc(200);
-	ptr[3] = ft_malloc(803);
-	ptr[4] = ft_malloc(1925);
-	ptr[5] = ft_malloc(3054);
-	ptr[6] = ft_malloc(765);
-	ptr[7] = ft_malloc(956324);
+	ptr[0] = malloc(59);
+	ptr[1] = malloc(568);
+	ptr[2] = malloc(200);
+	ptr[3] = malloc(803);
+	ptr[4] = malloc(1925);
+	ptr[5] = malloc(3054);
+	ptr[6] = malloc(765);
+	ptr[7] = malloc(956324);
 	show_alloc_mem();
-	my_free(ptr[3]);
-	my_free(ptr[0]);
-	my_free(0);
-	my_free((void*)95946546553);
-	ptr[3] = ft_malloc(803);
-	ptr[0] = ft_malloc(16);
+	printf("=== Test free valids ptr ===\n");
+	free(ptr[3]);
+	free(ptr[0]);
+	printf("=== Test free null ptr ===\n");
+	free(0);
+	printf("=== Test free invalid ptr ===\n");
+	free((void*)95946546553);
+	printf("=== New malloc on freed blocks ===\n");
+	ptr[3] = malloc(803);
+	ptr[0] = malloc(16);
+	show_alloc_mem();
+}
+
+void	test_malloc_0()
+{
+	void	*ptr;
+
+	printf("=== TEST MALLOC 0 ===\n");
+	printf("=== Malloc ptr ===\n");
+	ptr = malloc(0);
+	show_alloc_mem();
+	printf("=== Free ptr ===\n");
+	free(ptr);
 	show_alloc_mem();
 }
 
@@ -111,7 +128,8 @@ int		main()
 	// test_tiny_size_limits();
 	// test_tiny_create_extra_zone();
 	// test_large_malloc();
-	//test_show_alloc_mem();
-	test_free();
+	// test_show_alloc_mem();
+	// test_free();
+	test_malloc_0();
 	return (0);
 }

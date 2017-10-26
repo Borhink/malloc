@@ -6,7 +6,7 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/24 10:30:43 by qhonore           #+#    #+#              #
-#    Updated: 2017/10/25 18:02:06 by qhonore          ###   ########.fr        #
+#    Updated: 2017/10/26 14:07:40 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ all: lib
 	@make $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -shared -o $@ $^ $(LIB_PATH)libft.a
+	$(CC) $(CFLAGS) -shared -o $@ $^
 	ln -sf $(NAME) libft_malloc.so
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(DEP)

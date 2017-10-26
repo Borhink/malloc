@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 18:00:32 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/26 17:59:04 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void	*large_alloc(t_env *e, size_t size)
 		return (large_alloc(e, size));
 }
 
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	t_env	*e;
 
 	e = get_env();
-	if (size > SMALL)
+	if (size > SIZE_SMALL)
 		return (large_alloc(e, size));
-	else if (size > TINY)
+	else if (size > SIZE_TINY)
 	{
 		if (e->small == NULL && !init_zone(e, TYPE_SMALL))
 			return (NULL);
@@ -72,4 +72,16 @@ void	*ft_malloc(size_t size)
 			return (NULL);
 		return (tiny_small_alloc(e, size, TYPE_TINY));
 	}
+}
+
+void	*calloc(size_t nitems, size_t size)
+{
+	size_t	malloc_size;
+	void	*ptr;
+
+	malloc_size = nitems * size;
+	if (!(ptr = malloc(malloc_size)))
+		return (NULL);
+	ft_bzero(ptr, malloc_size);
+	return (ptr);
 }

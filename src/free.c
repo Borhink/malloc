@@ -6,13 +6,13 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 17:42:24 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 18:01:51 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/26 17:11:27 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-int		find_ptr(t_block *block, void *ptr)
+static int	free_ptr(t_block *block, void *ptr)
 {
 	while (block)
 	{
@@ -27,22 +27,22 @@ int		find_ptr(t_block *block, void *ptr)
 	return (0);
 }
 
-void	my_free(void *ptr)
+void		free(void *ptr)
 {
 	t_env	*e;
 
 	e = get_env();
 	if (!ptr)
 		return ;
-	if (find_ptr(e->tiny, ptr) || find_ptr(e->small, ptr)
-	|| find_ptr(e->large, ptr))
+	if (free_ptr(e->tiny, ptr) || free_ptr(e->small, ptr)
+	|| free_ptr(e->large, ptr))
 	{
-		ft_printf("Ptr %p is now free()\n", ptr);
+		printf("Ptr %p is now free()\n", ptr);
 		//ok
 	}
 	else
 	{
-		ft_printf("Ptr %p not found\n", ptr);
+		printf("Ptr %p not found\n", ptr);
 		//pas trouvé
 	}
 }

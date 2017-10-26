@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/21 13:53:36 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/25 17:08:32 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/26 17:58:09 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int		init_zone(t_env *e, int type)
 {
 	if (type == TYPE_TINY)
 	{
-		e->tiny_size = ALIGN_PAGE((TINY + sizeof(t_block)) * 100);
+		e->tiny_size = ALIGN_PAGE((SIZE_TINY + sizeof(t_block)) * 100);
 		if (!create_zone(&e->tiny, e->tiny_size))
 			return (0);
 	}
 	else
 	{
-		e->small_size = ALIGN_PAGE((SMALL + sizeof(t_block)) * 100);
+		e->small_size = ALIGN_PAGE((SIZE_SMALL + sizeof(t_block)) * 100);
 		if (!create_zone(&e->small, e->small_size))
 			return (0);
 	}
