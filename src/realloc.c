@@ -6,22 +6,11 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 13:54:55 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 19:27:39 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/28 19:22:50 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-t_block		*find_block(t_block *block, void *ptr)
-{
-	while (block)
-	{
-		if ((void*)block + sizeof(t_block) == ptr)
-			return (block);
-		block = block->next;
-	}
-	return (NULL);
-}
 
 void	*get_block_ptr(t_env *e, void *ptr, int *type)
 {
@@ -38,45 +27,31 @@ void	*get_block_ptr(t_env *e, void *ptr, int *type)
 	return (block);
 }
 
-int		get_size_type(size_t size)
-{
-	if (size > SIZE_SMALL)
-		return (TYPE_LARGE);
-	if (size > SIZE_TINY)
-		return (TYPE_SMALL);
-	return (TYPE_TINY);
-}
-
 void	*same_type_alloc(t_env *e, t_block *block, size_t size)
 {
 	t_block	*tmp;
 	size_t	free_size;
 
-	if (size < block->size)
+	if ((size < block->size) ||
+	(block->next && block->next->free && is_next_same_zone(block)
+	&& block->next->size + block->size >= size))
 	{
-		create_block(block, size);//check si le block suivant est free
+		create_block(block, size);
 		return ((void*)block + sizeof(t_block));
 	}
-	if (block->next && block->next->free
+	else if (block->next && block->next->free && is_next_same_zone(block)
 	&& block->next->size + block->size + sizeof(t_block) >= size)
+		merge_next_block(block);
 
-	}
-	tmp = block->next;
-	free_size = block->size;
-	while (tmp)
-	{
-		free_size += block->size
-		if ()
-		tmp = tmp->next;
-	}
 }
 
-24:12|24:8
-realloc 8 ->  24:8|24:12 //plus petit + next->free
-realloc 13 -> 24:13|24:7 //plus grand + next->free assez grand
-realloc 20 -> 24:20|24:0 //plus grand + next->free assez grand
-realloc 21 -> 24:44|0    //plus grand + next->free assez grand, mais trop petit pour split
-realloc 88 -> //plus grand + pas assez de place, nouvelle alloc
+// 24:42|24:8
+// realloc 38 ->  24:38|24:12 //plus petit + next->free			OK
+// realloc 43 -> 24:43|24:7 //plus grand + next->free assez grand	OK
+// realloc 50 -> 24:50|24:0 //plus grand + next->free assez grand	OK
+// realloc 51 -> 24:74|0    //plus grand + next->free assez grand, mais trop petit pour split OK
+//
+// realloc 88 -> //plus grand + pas assez de place, nouvelle alloc	TODO
 
 void	*realloc(void *ptr, size_t size)
 {
@@ -102,7 +77,7 @@ void	*realloc(void *ptr, size_t size)
 		if ((new_type = get_size_type(size)) == cur_type)
 			return (same_type_alloc(e, block, size));
 		else
-		{/* alloc nouveau dans le bon type + copie + free */}
+		{/* alloc dans le bon type + copie + free */}
 	}
 }
 

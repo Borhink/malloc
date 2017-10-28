@@ -6,7 +6,7 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/24 10:30:43 by qhonore           #+#    #+#              #
-#    Updated: 2017/10/26 14:07:40 by qhonore          ###   ########.fr        #
+#    Updated: 2017/10/28 14:29:21 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_PATH = ./obj/
 INC_PATH = ./include/ ./libft/include/
 LIB_PATH = ./libft/
 
-SRC_NAME = malloc.c init.c utils.c show_alloc_mem.c free.c
+SRC_NAME = malloc.c init.c utils.c show_alloc_mem.c free.c libft.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = -lft
 NAME = libft_malloc_$(HOSTTYPE).so

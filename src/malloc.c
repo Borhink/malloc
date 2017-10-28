@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 17:59:04 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/28 14:29:11 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ void	*calloc(size_t nitems, size_t size)
 	malloc_size = nitems * size;
 	if (!(ptr = malloc(malloc_size)))
 		return (NULL);
-	ft_bzero(ptr, malloc_size);
+	ft_memset(ptr, 0, malloc_size);
 	return (ptr);
 }

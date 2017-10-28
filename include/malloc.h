@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 16:43:19 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/28 18:54:13 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define TYPE_SMALL 1
 # define TYPE_LARGE 2
 
-# define TINY 256
-# define SMALL 1024
+# define SIZE_TINY 256
+# define SIZE_SMALL 1024
 
 # define ALIGN_24(x) ((x - 1) / 24 * 24 + 24)
 # define ALIGN_PAGE(x) ((x - 1) / getpagesize() * getpagesize() + getpagesize())
@@ -53,13 +53,18 @@ void	*calloc(size_t nitems, size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem(void);
 
-t_env	*get_env(void);
 int		init_zone(t_env *e, int type);
 int		create_zone(t_block **block, size_t size);
+
+t_env	*get_env(void);
+int		is_next_same_zone(t_block *block);
 void	create_block(t_block *block, size_t size);
+int		get_size_type(size_t size);
+t_block	*find_block(t_block *block, void *ptr);
+void	merge_next_block(t_block *block);
 
 size_t	ft_strlen(const char *s);
 int		ft_putstr(char const *s);
-void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *s, int c, size_t n);
 
 #endif
