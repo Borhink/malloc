@@ -6,11 +6,12 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 15:21:14 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/31 18:19:51 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
  #include "include/malloc.h"
+ #include <time.h>
 
 void	test_tiny_size_limits()
 {
@@ -123,13 +124,118 @@ void	test_malloc_0()
 	show_alloc_mem();
 }
 
-int		main()
+void	test_realloc()
 {
+	void	*ptr = NULL;
+
+	printf("=== TEST REALLOC ===\n");
+	printf("ptr = realloc(15)\n");
+	ptr = realloc(ptr, 15);
+	show_alloc_mem();
+}
+
+void	interactive_test()
+{
+	int		i = 0, j = 0, k, ret;
+	char	buf;
+	char	str[256];
+	int	size;
+	void	*ptr[256];
+
+	while ((ret = read(0, &buf, 1)) > 0)
+	{
+		if (buf == '\n')
+		{
+			str[i] = '\0';
+			if (str[0] == 'm')//malloc
+			{
+				size = atoi(&str[2]);
+				ptr[j++] = malloc(size);
+			}
+			if (str[0] == 'f')//free
+			{
+				free(ptr[atoi(&str[2])]);
+			}
+			if (str[0] == 'r')//realloc
+			{
+				size = atoi(&str[2]);
+				k = 2;
+				while (str[k] != ' ')
+					k++;
+				k = atoi(&str[k + 1]);
+				if (k == -1)
+					ptr[j++] = realloc(0, size);
+				else
+					ptr[k] = realloc(ptr[k], size);
+			}
+			k = 0;
+			printf("==| PTR LIST |==\n");
+			while (k < j)
+			{
+				printf("ptr[%d] = %p\n", k, ptr[k]);
+				k++;
+			}
+			printf("==| SHOW_ALLOC_MEM |==\n");
+			show_alloc_mem();
+			i = 0;
+		}
+		else
+			str[i++] = buf;
+	}
+}
+
+void	big_malloc_realloc_test()
+{
+	int		i;
+	void	*ptr[512];
+	int		m_size[512];
+	int		size;
+
+	i = 0;
+	printf("=============== Malloc ptr ===============\n");
+	while (i < 512)
+	{
+		size = rand() % 1024;
+		m_size[i] = size;
+		printf("====== %d: malloc(%d) ======\n", i, size);
+		ptr[i] = malloc(size);
+		i++;
+	}
+	i = 0;
+	printf("=============== Free ptr ===============\n");
+	while (i < 512)
+	{
+		size = rand() % 4;
+		if (size == 0)
+		{
+			printf("====== %d: free(%d) ======\n", i, size);
+			free(ptr[i]);
+		}
+		i++;
+	}
+	i = 0;
+	printf("=============== Realloc ptr ===============\n");
+	while (i < 512)
+	{
+		size = rand() % 1024;
+		printf("====== %d: realloc(%d) -> malloc(%d) ======\n", i, size, m_size[i]);
+		ptr[i] = realloc(ptr[i], size);
+		i++;
+	}
+	show_alloc_mem();
+}
+
+int		main(int ac, char **av)
+{
+	srand(time(NULL));
 	// test_tiny_size_limits();
 	// test_tiny_create_extra_zone();
 	// test_large_malloc();
 	// test_show_alloc_mem();
 	// test_free();
-	test_malloc_0();
+	// test_malloc_0();
+	// test_realloc();
+	// interactive_test();
+	big_malloc_realloc_test();
 	return (0);
 }

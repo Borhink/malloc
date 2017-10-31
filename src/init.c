@@ -6,11 +6,18 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/21 13:53:36 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 17:58:09 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/31 16:18:21 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+t_env	*get_env(void)
+{
+	static t_env	e = {NULL, 0, NULL, 0, NULL};
+
+	return (&e);
+}
 
 void	init_block(t_block *block, int size, t_block *next, int free)
 {

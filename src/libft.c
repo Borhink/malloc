@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 14:26:34 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/28 14:29:35 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/29 18:16:12 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,17 @@ void	*ft_memset(void *s, int c, size_t n)
 		i++;
 	}
 	return (s);
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		*(char*)(dest + i) = *(char*)(src + i);
+		i++;
+	}
+	return (dest);
 }

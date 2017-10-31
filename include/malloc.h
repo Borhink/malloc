@@ -6,17 +6,18 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/28 18:54:13 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/31 18:24:17 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
 
+# include <unistd.h>
 # include <stdlib.h>
 # include <sys/mman.h>
-# include "libft.h"
-# include "ft_printf.h"
+#include<stdio.h>
+#define DEBUG 0
 
 # define TYPE_TINY 0
 # define TYPE_SMALL 1
@@ -61,10 +62,14 @@ int		is_next_same_zone(t_block *block);
 void	create_block(t_block *block, size_t size);
 int		get_size_type(size_t size);
 t_block	*find_block(t_block *block, void *ptr);
-void	merge_next_block(t_block *block);
+int		merge_next_block(t_block *block);
 
 size_t	ft_strlen(const char *s);
 int		ft_putstr(char const *s);
 void	*ft_memset(void *s, int c, size_t n);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+
+void	debug_pls(char *line, t_block *block);
+void	ft_putnbr(int n);
 
 #endif

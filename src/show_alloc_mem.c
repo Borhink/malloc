@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 14:09:39 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/26 15:08:00 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/10/31 17:25:47 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	print_unsigned(unsigned long nb, int base, int x)
 	ft_putstr(str);
 }
 
-static int show_zone(t_block *block)
+static int	show_zone(t_block *block)
 {
 	int		i;
 	void	*ptr;
@@ -53,19 +53,21 @@ static int show_zone(t_block *block)
 	i = 0;
 	while (block)
 	{
-		if (!block->free)
-		{
-			ptr = (void*)block + sizeof(t_block);
-			print_unsigned((unsigned long)ptr, 16, 1);
-			ft_putstr(" - ");
-			print_unsigned((unsigned long)ptr + block->size, 16, 1);
-			ft_putstr(" : ");
-			print_unsigned(block->size, 10, 0);
-			block->size > 1 ? ft_putstr(" octets\n") : ft_putstr(" octet\n");
-			i += block->size;
-		}
+		printf("struct block (addr: %p) (ptr: %p) { free: %d, size: %zu, next: %p };\n", block, (void*)block + sizeof(t_block), block->free, block->size, block->next);(void)ptr;
+		// if (!block->free)
+		// {
+		// 	ptr = (void*)block + sizeof(t_block);
+		// 	print_unsigned((unsigned long)ptr, 16, 1);
+		// 	ft_putstr(" - ");
+		// 	print_unsigned((unsigned long)ptr + block->size, 16, 1);
+		// 	ft_putstr(" : ");
+		// 	print_unsigned(block->size, 10, 0);
+		// 	block->size > 1 ? ft_putstr(" octets\n") : ft_putstr(" octet\n");
+		// 	i += block->size;
+		// }
 		block = block->next;
 	}
+
 	return (i);
 }
 
