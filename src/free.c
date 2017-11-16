@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 17:42:24 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/31 16:45:38 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/16 19:12:18 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	free_ptr(t_block *block, void *ptr)
 	{
 		if ((void*)block + sizeof(t_block) == ptr)
 		{
-			// if (block->free == 1) DEJA FREE
+			if (block->free == 1)
+				return (1);
 			block->free = 1;
 			merge_all_free(start);
 			return (1);
@@ -54,11 +55,5 @@ void		free(void *ptr)
 		return ;
 	if (free_ptr(e->tiny, ptr) || free_ptr(e->small, ptr)
 	|| free_ptr(e->large, ptr))
-	{
-		//ok
-	}
-	else
-	{
-		//pas trouvé
-	}
+		return ;
 }

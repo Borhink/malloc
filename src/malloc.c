@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/31 17:49:11 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/16 19:45:38 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ void	*tiny_small_alloc(t_env *e, size_t size, int type)
 	}
 	if ((type == TYPE_TINY && !create_zone(&e->tiny, e->tiny_size))
 	|| (type == TYPE_SMALL && !create_zone(&e->small, e->small_size)))
+	{
 		return (NULL);
+	}
 	else
+	{
 		return (tiny_small_alloc(e, size, type));
+	}
 }
 
 void	*large_alloc(t_env *e, size_t size)
@@ -56,22 +60,25 @@ void	*large_alloc(t_env *e, size_t size)
 void	*malloc(size_t size)
 {
 	t_env	*e;
+	void	*ptr;
 
 	e = get_env();
+	ptr = NULL;
+	pthread_mutex_lock(&e->mutex);
 	if (size > SIZE_SMALL)
-		return (large_alloc(e, size));
+		ptr = large_alloc(e, size);
 	else if (size > SIZE_TINY)
 	{
-		if (e->small == NULL && !init_zone(e, TYPE_SMALL))
-			return (NULL);
-		return (tiny_small_alloc(e, size, TYPE_SMALL));
+		if (e->small != NULL || init_zone(e, TYPE_SMALL))
+			ptr = tiny_small_alloc(e, size, TYPE_SMALL);
 	}
 	else
 	{
-		if (e->tiny == NULL && !init_zone(e, TYPE_TINY))
-			return (NULL);
-		return (tiny_small_alloc(e, size, TYPE_TINY));
+		if (e->tiny != NULL || init_zone(e, TYPE_TINY))
+			ptr = tiny_small_alloc(e, size, TYPE_TINY);
 	}
+	pthread_mutex_unlock(&e->mutex);
+	return (ptr);
 }
 
 void	*calloc(size_t nitems, size_t size)
@@ -85,3 +92,9 @@ void	*calloc(size_t nitems, size_t size)
 	ft_memset(ptr, 0, malloc_size);
 	return (ptr);
 }
+
+//Defragmentation memoire		OK
+//Calloc						OK
+//Thread safe					OK
+//show_zone_state				OK
+//Free (pointeur NULL + remise a 0)

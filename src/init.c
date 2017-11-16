@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/21 13:53:36 by qhonore           #+#    #+#             */
-/*   Updated: 2017/10/31 16:18:21 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/16 19:43:45 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,38 @@
 
 t_env	*get_env(void)
 {
-	static t_env	e = {NULL, 0, NULL, 0, NULL};
+	static t_env	e = {NULL, 0, NULL, 0, NULL, PTHREAD_MUTEX_INITIALIZER};
 
 	return (&e);
+}
+
+void	create_block(t_block *block, size_t size)
+{
+	t_block	tmp;
+	t_block	*next;
+
+	block->free = 0;
+	if (block->size == size)
+		return ;
+	if (block->next)
+		tmp = *(block->next);
+	next = block->next;
+	if (block->next && block->next->free && is_next_same_zone(block))
+	{
+		block->next = (t_block*)((void*)block + sizeof(t_block) + size);
+		block->next->free = 1;
+		block->next->size = (int)block->size - (int)size + tmp.size;
+		block->next->next = tmp.next;
+		block->size = size;
+	}
+	else if ((int)block->size - (int)size > (int)sizeof(t_block))
+	{
+		block->next = (t_block*)((void*)block + sizeof(t_block) + size);
+		block->next->free = 1;
+		block->next->size = (int)block->size - (int)size - sizeof(t_block);
+		block->next->next = next;
+		block->size = size;
+	}
 }
 
 void	init_block(t_block *block, int size, t_block *next, int free)
