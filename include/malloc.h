@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:44:15 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 21:31:26 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ struct	s_env
 };
 
 void	free(void *ptr);
+void	sfree(void *ptr, char val);
 void	*malloc(size_t size);
 void	*calloc(size_t nitems, size_t size);
 void	*realloc(void *ptr, size_t size);

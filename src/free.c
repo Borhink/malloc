@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 17:42:24 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:12:18 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 21:18:37 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	merge_all_free(t_block *block)
 	}
 }
 
-static int	free_ptr(t_block *block, void *ptr)
+static int	free_ptr(t_block *block, void *ptr, int set_mem, char val)
 {
 	t_block		*start;
 
@@ -38,6 +38,8 @@ static int	free_ptr(t_block *block, void *ptr)
 			if (block->free == 1)
 				return (1);
 			block->free = 1;
+			if (set_mem)
+				ft_memset((void*)block + sizeof(t_block), val, block->size);
 			merge_all_free(start);
 			return (1);
 		}
@@ -53,7 +55,19 @@ void		free(void *ptr)
 	e = get_env();
 	if (!ptr)
 		return ;
-	if (free_ptr(e->tiny, ptr) || free_ptr(e->small, ptr)
-	|| free_ptr(e->large, ptr))
+	if (free_ptr(e->tiny, ptr, 0, 0) || free_ptr(e->small, ptr, 0, 0)
+	|| free_ptr(e->large, ptr, 0, 0))
+		return ;
+}
+
+void		sfree(void *ptr, char val)
+{
+	t_env	*e;
+
+	e = get_env();
+	if (!ptr)
+		return ;
+	if (free_ptr(e->tiny, ptr, 1, val) || free_ptr(e->small, ptr, 1, val)
+	|| free_ptr(e->large, ptr, 1, val))
 		return ;
 }

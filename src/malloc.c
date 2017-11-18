@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:43:33 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:45:38 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 22:13:41 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,3 +98,4 @@ void	*calloc(size_t nitems, size_t size)
 //Thread safe					OK
 //show_zone_state				OK
 //Free (pointeur NULL + remise a 0)
+//Free munmap

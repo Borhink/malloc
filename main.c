@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:39:50 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 22:01:32 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void	big_malloc_realloc_test()
 		size = rand() % 4;
 		if (size == 0)
 		{
-			printf("====== %d: free(%d) ======\n", i, size);
+			printf("====== %d: free(%p) ======\n", i, ptr[i]);
 			free(ptr[i]);
 		}
 		i++;
@@ -233,10 +233,21 @@ int		main(int ac, char **av)
 	// test_tiny_create_extra_zone();
 	// test_large_malloc();
 	// test_show_alloc_mem();
-	test_free();
+	// test_free();
 	// test_malloc_0();
 	// test_realloc();
 	// interactive_test();
 	// big_malloc_realloc_test();
+	char *ptr = malloc(100);
+	int i;
+	memset(ptr, '6', 100);
+	i = -1;
+	while (++i < 100)
+		printf("ptr[%d] = %d\n", i, ptr[i]);
+	sfree(ptr, 0);
+	printf("sfree (ptr, '0')\n");
+	i = -1;
+	while (++i < 100)
+		printf("ptr[%d] = %d\n", i, ptr[i]);
 	return (0);
 }
