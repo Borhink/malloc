@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 17:42:24 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/18 21:18:37 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 23:14:13 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,16 @@ void		free(void *ptr)
 	t_env	*e;
 
 	e = get_env();
+	pthread_mutex_lock(&e->mutex);
 	if (!ptr)
+	{
+		pthread_mutex_unlock(&e->mutex);
 		return ;
+	}
 	if (free_ptr(e->tiny, ptr, 0, 0) || free_ptr(e->small, ptr, 0, 0)
 	|| free_ptr(e->large, ptr, 0, 0))
-		return ;
+		pthread_mutex_unlock(&e->mutex);
+	pthread_mutex_unlock(&e->mutex);
 }
 
 void		sfree(void *ptr, char val)
@@ -65,9 +70,14 @@ void		sfree(void *ptr, char val)
 	t_env	*e;
 
 	e = get_env();
+	pthread_mutex_lock(&e->mutex);
 	if (!ptr)
+	{
+		pthread_mutex_unlock(&e->mutex);
 		return ;
+	}
 	if (free_ptr(e->tiny, ptr, 1, val) || free_ptr(e->small, ptr, 1, val)
 	|| free_ptr(e->large, ptr, 1, val))
-		return ;
+		pthread_mutex_unlock(&e->mutex);
+	pthread_mutex_unlock(&e->mutex);
 }

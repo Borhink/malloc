@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 14:09:39 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:43:57 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 23:14:52 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,11 @@ static int	show_zone(t_block *block, int type)
 
 void		show_alloc_mem(void)
 {
-	const t_env	*e = get_env();
-	int			size;
+	t_env	*e;
+	int		size;
 
+	e = get_env();
+	pthread_mutex_lock(&e->mutex);
 	ft_putstr("TINY : ");
 	print_unsigned((unsigned long)e->tiny, 16, 1);
 	ft_putstr("\n");
@@ -91,12 +93,14 @@ void		show_alloc_mem(void)
 	ft_putstr("Total : ");
 	print_unsigned(size, 10, 0);
 	size > 1 ? ft_putstr(" octets\n") : ft_putstr(" octet\n");
+	pthread_mutex_unlock(&e->mutex);
 }
 
 void		show_zone_state(int zone)
 {
-	const t_env	*e = get_env();
+	t_env	*e;
 
+	e = get_env();
 	if (zone == TYPE_TINY || zone == -1)
 	{
 		ft_putstr("Zone tiny : ");

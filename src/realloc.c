@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 13:54:55 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/16 19:12:48 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 23:04:30 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,21 @@ void	*get_block_ptr(t_env *e, void *ptr, int *type)
 
 void	*new_alloc(t_block *block, size_t size)
 {
+	t_env	*e;
 	void	*ptr;
 
+	e = get_env();
+	pthread_mutex_unlock(&e->mutex);
 	if ((ptr = (void*)malloc(size)))
 	{
+		pthread_mutex_lock(&e->mutex);
 		if (size > block->size)
 			ft_memcpy(ptr, (void*)block + sizeof(t_block), block->size);
 		else
 			ft_memcpy(ptr, (void*)block + sizeof(t_block), size);
+		pthread_mutex_unlock(&e->mutex);
 		free((void*)block + sizeof(t_block));
+		pthread_mutex_lock(&e->mutex);
 		return (ptr);
 	}
 	else
@@ -46,7 +52,7 @@ void	*new_alloc(t_block *block, size_t size)
 
 void	*same_alloc_type(t_block *block, size_t size)
 {
-	if ((size < block->size) ||
+	if ((size <= block->size) ||
 	(block->next && block->next->free && is_next_same_zone(block)
 	&& block->next->size + block->size >= size))
 	{
@@ -68,25 +74,26 @@ void	*realloc(void *ptr, size_t size)
 	t_env	*e;
 	t_block	*block;
 	int		cur_type;
-	int		new_type;
+	void	*ret;
 
 	e = get_env();
+	ret = NULL;
 	if (!ptr)
 		return (malloc(size));
+	pthread_mutex_lock(&e->mutex);
 	if (!(block = get_block_ptr(e, ptr, &cur_type)))
-		return (NULL);
-	if (size == 0)
+		ret = NULL;
+	else if (size == 0)
 	{
+		pthread_mutex_unlock(&e->mutex);
 		free(ptr);
-		return (NULL);
+		pthread_mutex_lock(&e->mutex);
+		ret = NULL;
 	}
-	else if (size == block->size)
-		return (ptr);
-	else
-	{
-		if ((new_type = get_size_type(size)) == cur_type)
-			return (same_alloc_type(block, size));
-		else
-			return (new_alloc(block, size));
-	}
+	else if (get_size_type(size) == cur_type)
+		ret = same_alloc_type(block, size);
+	else if (get_size_type(size) != cur_type)
+		ret = new_alloc(block, size);
+	pthread_mutex_unlock(&e->mutex);
+	return (ret);
 }

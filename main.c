@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/17 14:09:23 by qhonore           #+#    #+#             */
-/*   Updated: 2017/11/18 22:01:32 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/11/18 22:58:20 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,17 +237,18 @@ int		main(int ac, char **av)
 	// test_malloc_0();
 	// test_realloc();
 	// interactive_test();
-	// big_malloc_realloc_test();
-	char *ptr = malloc(100);
-	int i;
-	memset(ptr, '6', 100);
-	i = -1;
-	while (++i < 100)
-		printf("ptr[%d] = %d\n", i, ptr[i]);
-	sfree(ptr, 0);
-	printf("sfree (ptr, '0')\n");
-	i = -1;
-	while (++i < 100)
-		printf("ptr[%d] = %d\n", i, ptr[i]);
-	return (0);
+	big_malloc_realloc_test();
+
+	// char *ptr = malloc(100);
+	// int i;
+	// memset(ptr, '6', 100);
+	// i = -1;
+	// while (++i < 100)
+	// 	printf("ptr[%d] = %d\n", i, ptr[i]);
+	// sfree(ptr, 0);
+	// printf("sfree (ptr, '0')\n");
+	// i = -1;
+	// while (++i < 100)
+	// 	printf("ptr[%d] = %d\n", i, ptr[i]);
+	// return (0);
 }
